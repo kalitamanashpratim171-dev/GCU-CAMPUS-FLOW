@@ -20,12 +20,11 @@ const createEvent = async (req, res) => {
             rules,
         } = req.body;
 
-        // 1. Validate required fields
+        // 1. Validate required fields (department & venue are optional)
         if (
             !title ||
             !description ||
             !category ||
-            !department ||
             !date ||
             !startTime ||
             !endTime ||
@@ -34,7 +33,7 @@ const createEvent = async (req, res) => {
         ) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required fields for event creation",
+                message: "Missing required fields: title, description, category, date, startTime, endTime, registrationDeadline, maxParticipants",
             });
         }
 

@@ -14,7 +14,9 @@ import {
     ScanLine,
     ShieldCheck,
     BarChart3,
-    MapPin
+    MapPin,
+    History,
+    Bell
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -39,12 +41,30 @@ export default function Sidebar() {
     const role = user?.role || 'student';
     const roleName = user?.name || 'User';
 
-    const defaultLinks = [
-        { name: 'Event Discovery', path: '/student/events', icon: CalendarDays },
-        { name: 'My Registrations', path: '/student/registrations', icon: Ticket },
-        { name: 'QR Gate Pass', path: '/student/qr-pass', icon: QrCode },
-        { name: 'My Certificates', path: '/student/certificates', icon: Award },
-        { name: 'Profile / Settings', path: '/student/profile', icon: UserCircle },
+    const studentCategories = [
+        {
+            title: "MAIN",
+            links: [
+                { name: 'Dashboard', path: '/student', icon: LayoutDashboard },
+                { name: 'Explore Events', path: '/student/events', icon: CalendarDays },
+                { name: 'My Registrations', path: '/student/registrations', icon: Ticket },
+            ]
+        },
+        {
+            title: "PARTICIPATION",
+            links: [
+                { name: 'QR Attendance', path: '/student/qr-attendance', icon: QrCode },
+                { name: 'Certificates', path: '/student/certificates', icon: Award },
+                { name: 'History', path: '/student/history', icon: History }
+            ]
+        },
+        {
+            title: "COMMUNITY & ALERTS",
+            links: [
+                { name: 'Notifications', path: '/student/notifications', icon: Bell, badge: '3' },
+                { name: 'Event Calendar', path: '/student/calendar', icon: CalendarDays }
+            ]
+        }
     ];
 
     const organizerCategories = [
@@ -184,30 +204,28 @@ export default function Sidebar() {
                     </div>
                 ))}
 
-                {role === 'student' && (
-                    <>
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2 mb-2 mt-4 px-4">Main Menu</div>
-                        <div className="px-4 space-y-1">
-                            {defaultLinks.map((link) => {
-                                const isActive = location.pathname === link.path || (location.pathname.startsWith(link.path + '/') && link.path !== `/${role}`);
-                                const Icon = link.icon;
-                                return (
-                                    <Link
-                                        key={link.name}
-                                        to={link.path}
-                                        className={`flex items-center gap-3 px-3 py-2.5 rounded-[8px] transition-all text-[14px] font-medium ${isActive
-                                            ? 'bg-primary text-white shadow-md shadow-primary/20'
-                                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                                            }`}
-                                    >
-                                        <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                                        {link.name}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    </>
-                )}
+                {role === 'student' && studentCategories.map((category, idx) => (
+                    <div key={idx} className="mb-4">
+                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-6 mb-2 mt-2">{category.title}</div>
+                        {category.links.map((link) => {
+                            const isActive = location.pathname === link.path || (location.pathname.startsWith(link.path + '/') && link.path !== `/${role}`);
+                            const Icon = link.icon;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    className={`flex items-center justify-between mx-3 px-3 py-2.5 rounded-[8px] transition-all text-[13px] font-bold ${isActive
+                                        ? 'bg-[#0f172a] text-white shadow-sm'
+                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-3"><Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} /> {link.name}</span>
+                                    {link.badge && <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${isActive ? 'bg-white text-[#0f172a]' : 'bg-red-50 text-red-600'}`}>{link.badge}</span>}
+                                </Link>
+                            );
+                        })}
+                    </div>
+                ))}
             </div>
 
             {/* User Profile Area & Logout */}

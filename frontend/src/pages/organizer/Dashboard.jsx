@@ -61,7 +61,7 @@ export default function OrganizerDashboard() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-6">
                 <div>
                     <h1 className="text-[32px] font-bold text-slate-900 tracking-tight leading-tight flex items-center gap-3">
-                        Good morning, Dr. Barman
+                        Good morning, {user.name || 'Organizer'}
                         <span className="bg-primary/10 text-primary border border-primary/20 text-[10px] uppercase font-bold px-2 py-0.5 rounded-[4px]">AY 2024-25</span>
                     </h1>
                     <p className="text-slate-500 mt-1.5 text-[14px] flex items-center gap-2">
